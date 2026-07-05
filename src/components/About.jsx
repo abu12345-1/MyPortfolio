@@ -1,89 +1,105 @@
-import React from "react";
+import { motion } from "framer-motion";
+import { fadeUp, fadeIn, stagger, revealViewport } from "./motion";
 
 export default function About() {
   return (
-    // <section id="about" className="py-16 bg-gray-50">
-    //   <div className="max-w-4xl mx-auto px-4">
-    //     <h2 className="text-3xl font-bold mb-4">About Me</h2>
-    //     <p className="text-gray-700 leading-relaxed">
-    //       Experienced Frontend Developer with 5+ years of delivering scalable and high-performance web applications using modern JavaScript frameworks and tooling.
-    //       Proficient in React.js and Redux (Toolkit, Thunk, Saga), with in-depth knowledge of component-driven development and React Hooks.
-    //     </p>
-    //     <p className="mt-4 text-gray-700 leading-relaxed">
-    //       Specialized in building responsive and accessible UIs using Tailwind CSS, Material UI, SASS/SCSS, and Bootstrap.
-    //       Skilled at front-end performance tuning with lazy loading, code splitting, and memoization.
-    //     </p>
-
-    //   </div>
-    // </section>
-
     <section
       id="about"
-      className="py-20 bg-gray-50 dark:bg-slate-900 dark:text-gray-100"
+      className="py-24 bg-white dark:bg-[#0D1117] transition-colors duration-300"
     >
       <div className="max-w-6xl mx-auto px-6">
-        {/* Title */}
-        <h2 className="text-4xl font-extrabold text-center mb-12 text-gray-800">
-          About Me 👨‍💻
-        </h2>
+        <motion.p
+          initial="hidden"
+          whileInView="show"
+          viewport={revealViewport}
+          variants={fadeUp}
+          className="font-mono text-sm text-[#10B981] text-center mb-2"
+        >
+          // about me
+        </motion.p>
+        <motion.h2
+          initial="hidden"
+          whileInView="show"
+          viewport={revealViewport}
+          variants={fadeUp}
+          className="text-4xl font-extrabold text-center mb-14 text-[#1A1D23] dark:text-white"
+        >
+          About
+        </motion.h2>
 
-        {/* Two Column Layout */}
-        <div className="grid md:grid-cols-2 gap-10 items-center">
-          {/* Profile Image */}
-          <div className="flex justify-center">
-            <img
-              src="/port-img.jpeg" // replace with your photo
-              alt="Abubucker"
-              className="w-64 h-64 object-cover rounded-2xl shadow-lg hover:scale-105 transition-transform duration-300"
-            />
-          </div>
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          {/* Profile image with a bracket frame, like a highlighted code block */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={revealViewport}
+            variants={fadeIn}
+            className="flex justify-center"
+          >
+            <div className="relative w-64 h-64">
+              <span className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-[#10B981] rounded-tl-lg" />
+              <span className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-[#10B981] rounded-br-lg" />
+              <motion.img
+                whileHover={{ scale: 1.04 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                src="/port-img.jpeg"
+                alt="Abubucker"
+                className="w-64 h-64 object-cover rounded-2xl shadow-lg"
+              />
+            </div>
+          </motion.div>
 
-          {/* About Content */}
-          <div>
-            <p className="text-gray-700 leading-relaxed text-lg">
-              I’m an{" "}
-              <span className="font-semibold text-indigo-600">
-                Experienced Frontend Developer
-              </span>
-              with <span className="font-semibold">4+ years</span> of delivering
-              scalable and high-performance web applications using modern
-              JavaScript frameworks and tooling.
-            </p>
+          {/* About content, staggered line by line */}
+          <motion.div
+            initial="hidden"
+            whileInView="show"
+            viewport={revealViewport}
+            variants={stagger(0.15)}
+          >
+            <motion.p
+              variants={fadeUp}
+              className="text-[#1A1D23]/80 dark:text-[#E7E9EC]/80 leading-relaxed text-lg"
+            >
+              I'm an{" "}
+              <span className="font-semibold text-[#10B981]">
+                experienced Frontend Developer
+              </span>{" "}
+              with{" "}
+              <span className="font-semibold text-[#1A1D23] dark:text-white">
+                4.6 years
+              </span>{" "}
+              of delivering scalable and high-performance web applications using
+              modern JavaScript frameworks and tooling.
+            </motion.p>
 
-            <p className="mt-4 text-gray-700 leading-relaxed text-lg">
+            <motion.p
+              variants={fadeUp}
+              className="mt-4 text-[#1A1D23]/80 dark:text-[#E7E9EC]/80 leading-relaxed text-lg"
+            >
               Proficient in{" "}
-              <span className="font-semibold text-indigo-600">React.js</span>{" "}
-              and
-              <span className="font-semibold text-indigo-600"> Redux</span>,
-              with in-depth knowledge of component-driven development and React
+              <span className="font-semibold text-[#10B981]">React.js</span> and{" "}
+              <span className="font-semibold text-[#10B981]">Redux</span>, with
+              in-depth knowledge of component-driven development and React
               Hooks.
-            </p>
+            </motion.p>
 
-            <p className="mt-4 text-gray-700 leading-relaxed text-lg">
-              Specialized in building responsive and accessible UIs using
-              <span className="font-semibold text-indigo-600">
-                {" "}
+            <motion.p
+              variants={fadeUp}
+              className="mt-4 text-[#1A1D23]/80 dark:text-[#E7E9EC]/80 leading-relaxed text-lg"
+            >
+              Specialized in building responsive and accessible UIs using{" "}
+              <span className="font-semibold text-[#10B981]">
                 Tailwind CSS, Material UI, SASS/SCSS
-              </span>
-              , and{" "}
-              <span className="font-semibold text-indigo-600">Bootstrap</span>.
-              Skilled at front-end performance tuning with
-              <span className="font-semibold">
-                {" "}
+              </span>{" "}
+              and{" "}
+              <span className="font-semibold text-[#10B981]">Bootstrap</span>.
+              Skilled at front-end performance tuning with{" "}
+              <span className="font-semibold text-[#1A1D23] dark:text-white">
                 lazy loading, code splitting, and memoization
               </span>
               .
-            </p>
-
-            {/* Button */}
-            {/* <div className="mt-6">
-              <a
-                href="#projects"
-                className="inline-block px-6 py-3 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition">
-                View My Work 🚀
-              </a>
-            </div> */}
-          </div>
+            </motion.p>
+          </motion.div>
         </div>
       </div>
     </section>

@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
     @apply bg-white text-slate-800;
 }
 
@@ -24,4 +24,11 @@ html {
 
 .animate-slideDown {
     animation: slideDown 0.3s ease forwards;
+} */
+
+body {
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+.font-mono {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
 }

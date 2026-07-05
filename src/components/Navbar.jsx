@@ -1,162 +1,166 @@
-// import { useEffect, useState } from "react";
-// import { Moon } from "react-feather";
-// import { FiMenu, FiX } from "react-icons/fi";
-
-// export default function Navbar() {
-//   const [isOpen, setIsOpen] = useState(false);
-//   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light')
-
-//   useEffect(() => {
-//     if (theme === 'dark') {
-//       document.documentElement.classList.add('dark')
-//     } else {
-//       document.documentElement.classList.remove('dark')
-//     }
-//     localStorage.setItem('theme', theme)
-//   }, [theme])
-
-//   const links = [
-//     { name: "Home", href: "#home" },
-//     { name: "About", href: "#about" },
-//     { name: "Skills", href: "#skills" },
-//     { name: "Experience", href: "#experience" },
-//     { name: "Projects", href: "#projects" },
-//     { name: "Contact", href: "#contact" },
-//   ];
-
-//   return (
-//     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 shadow-md">
-//       <div className="max-w-6xl mx-auto flex items-center justify-between py-4 px-6">
-
-//         {/* Logo */}
-//         <div className="text-2xl font-extrabold text-indigo-600 tracking-wide">
-//           Abubucker
-//         </div>
-
-//         {/* Desktop Links */}
-//         <ul className="hidden md:flex space-x-8 text-sm font-medium">
-//           {links.map((link) => (
-//             <li key={link.name}>
-//               <a
-//                 href={link.href}
-//                 className="relative text-gray-700 hover:text-indigo-600 transition">
-//                 {link.name}
-//                 <span className="absolute left-0 bottom-[-4px] w-0 h-[2px] bg-indigo-600 transition-all duration-300 group-hover:w-full"></span>
-//               </a>
-//             </li>
-//           ))}
-//         </ul>
-
-//         {/* Mobile Menu Button */}
-//         <button
-//           className="md:hidden text-2xl text-gray-700"
-//           onClick={() => setIsOpen(!isOpen)}>
-//           {isOpen ? <FiX /> : <FiMenu />}
-//         </button>
-//       </div>
-
-//       {/* Mobile Menu */}
-//       {isOpen && (
-//         <div className="md:hidden bg-white/95 shadow-lg px-6 py-4 space-y-4 text-center">
-//           {links.map((link) => (
-//             <a
-//               key={link.name}
-//               href={link.href}
-//               className="block text-gray-700 font-medium hover:text-indigo-600 transition"
-//               onClick={() => setIsOpen(false)}>
-//               {link.name}
-//             </a>
-//           ))}
-//           <button
-//             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-//             className="ml-4 p-2 rounded-full hover:bg-gray-200 dark:hover:bg-slate-700">
-//             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-//           </button>
-//         </div>
-//       )}
-//     </nav>
-//   );
-// }
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { FiMenu, FiX } from "react-icons/fi";
+import ThemeToggle from "./ThemeToggle";
+
+const links = [
+  { name: "Home", file: "Hero.jsx", href: "#home" },
+  { name: "About", file: "About.jsx", href: "#about" },
+  { name: "Skills", file: "Skills.jsx", href: "#skills" },
+  { name: "Experience", file: "Experience.jsx", href: "#experience" },
+  { name: "Projects", file: "Projects.jsx", href: "#projects" },
+  { name: "Contact", file: "Contact.jsx", href: "#contact" },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [active, setActive] = useState("#home");
+  const [scrolled, setScrolled] = useState(false);
 
-  const links = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
-  ];
+  // Track which section is in view so the "open tab" indicator follows
+  // scroll position, the way an editor highlights the active file tab.
+  useEffect(() => {
+    const sections = links
+      .map((l) => document.querySelector(l.href))
+      .filter(Boolean);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(`#${entry.target.id}`);
+        });
+      },
+      { rootMargin: "-45% 0px -50% 0px", threshold: 0 },
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white/70 backdrop-blur-md shadow-md z-50 border-b border-gray-200 transition-all duration-300">
-      <div className="max-w-6xl mx-auto flex items-center justify-between py-3 px-6 md:px-10">
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 border-b transition-colors duration-300
+        ${
+          scrolled
+            ? "bg-white/85 dark:bg-[#0B0E14]/85 backdrop-blur-md border-[#E4E7EB] dark:border-[#232935] shadow-sm"
+            : "bg-white/60 dark:bg-[#0B0E14]/60 backdrop-blur-sm border-transparent"
+        }`}
+    >
+      <div className="max-w-6xl mx-auto flex items-center justify-between py-5 px-6 md:px-10">
+        {/* Logo styled like a workspace name */}
+        <a href="#home" className="flex items-center gap-2 group">
+          <span className="w-2.5 h-2.5 rounded-full bg-[#10B981] group-hover:animate-pulse" />
+          <span className="text-lg md:text-xl font-bold tracking-tight text-[#1A1D23] dark:text-[#E7E9EC] font-mono">
+            abubucker<span className="text-[#10B981]">/</span>portfolio
+          </span>
+        </a>
 
-        {/* Logo */}
-        <div className="text-2xl md:text-3xl font-extrabold text-indigo-600 tracking-wide hover:scale-105 transition-transform">
-          Abubucker
-        </div>
-
-        {/* Desktop Links */}
-        <ul className="hidden md:flex space-x-8 text-sm font-semibold">
-          {links.map((link) => (
-            <li key={link.name} className="group relative">
-              <a
-                href={link.href}
-                className="text-gray-700 hover:text-indigo-600 transition-all duration-300">
-                {link.name}
-                <span className="absolute left-0 bottom-[-5px] w-0 h-[2px] bg-indigo-600 transition-all duration-300 group-hover:w-full"></span>
-              </a>
-            </li>
-          ))}
+        {/* Desktop "editor tabs" */}
+        <ul className="hidden md:flex items-stretch gap-1 text-sm font-medium">
+          {links.map((link) => {
+            const isActive = active === link.href;
+            return (
+              <li key={link.name} className="relative">
+                <a
+                  href={link.href}
+                  className={`relative flex flex-col items-start px-3 py-2 rounded-t-md font-mono text-[13px] transition-colors
+                    ${
+                      isActive
+                        ? "text-[#1A1D23] dark:text-white"
+                        : "text-[#66707F] dark:text-[#94A0AF] hover:text-[#1A1D23] dark:hover:text-white"
+                    }`}
+                >
+                  <span className="flex items-center gap-1.5">
+                    {link.name}
+                    <span
+                      className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                        isActive ? "bg-[#10B981]" : "bg-transparent"
+                      }`}
+                    />
+                  </span>
+                  {isActive && (
+                    <motion.span
+                      layoutId="active-tab-underline"
+                      className="absolute left-2 right-2 -bottom-[1px] h-[2px] bg-[#10B981] rounded-full"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  )}
+                </a>
+              </li>
+            );
+          })}
         </ul>
 
-        {/* CTA Button (Hire Me / Resume) */}
-        <div className="hidden md:block">
-          <a
+        <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
+          <motion.a
             href="#contact"
-            className="bg-indigo-600 text-white px-5 py-2 rounded-full font-medium hover:bg-indigo-700 transition shadow-md hover:shadow-lg">
+            whileHover={{ y: -2 }}
+            whileTap={{ scale: 0.96 }}
+            className="bg-[#10B981] text-white px-5 py-2 rounded-full font-medium shadow-sm hover:shadow-md transition-shadow"
+          >
             Hire Me
-          </a>
+          </motion.a>
         </div>
 
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden text-2xl text-gray-700"
-          onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <FiX /> : <FiMenu />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`absolute top-full left-0 w-full md:hidden bg-white/95 shadow-lg transition-all duration-500 ease-in-out ${isOpen
-          ? "opacity-100 translate-y-0 visible"
-          : "opacity-0 -translate-y-5 invisible"
-          }`}>
-        <div className="px-6 py-4 space-y-4 text-center">
-          {links.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className="block text-gray-700 font-medium hover:text-indigo-600 transition"
-              onClick={() => setIsOpen(false)}>
-              {link.name}
-            </a>
-          ))}
-          <a
-            href="#contact"
-            className="inline-block bg-indigo-600 text-white px-5 py-2 rounded-full font-medium hover:bg-indigo-700 transition shadow-md hover:shadow-lg"
-            onClick={() => setIsOpen(false)}>
-            Hire Me
-          </a>
+        {/* Mobile: theme toggle stays visible next to the menu button */}
+        <div className="flex items-center gap-3 md:hidden">
+          <ThemeToggle />
+          <button
+            className="text-2xl text-[#1A1D23] dark:text-[#E7E9EC]"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
+          >
+            {isOpen ? <FiX /> : <FiMenu />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="md:hidden overflow-hidden bg-white/95 dark:bg-[#0B0E14]/95 shadow-lg"
+          >
+            <div className="px-6 py-4 space-y-1 text-center font-mono">
+              {links.map((link, i) => (
+                <motion.a
+                  key={link.name}
+                  href={link.href}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="block py-2 text-[#1A1D23] dark:text-[#E7E9EC] font-medium hover:text-[#10B981] transition"
+                  onClick={() => setIsOpen(false)}
+                >
+                  {link.name}
+                </motion.a>
+              ))}
+              <a
+                href="#contact"
+                className="inline-block mt-2 bg-[#10B981] text-white px-5 py-2 rounded-full font-medium shadow-md"
+                onClick={() => setIsOpen(false)}
+              >
+                Hire Me
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
