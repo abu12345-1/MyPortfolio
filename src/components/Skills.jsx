@@ -119,7 +119,13 @@ const skillCategories = {
   },
   "ui & styling": {
     label: "devDependencies",
-    skills: ["tailwindcss", "bootstrap", "material-ui", "sass"],
+    skills: [
+      "tailwindcss",
+      "bootstrap",
+      "material-ui",
+      "CSS3",
+      "Responsive Design",
+    ],
   },
   performance: {
     label: "scripts",
