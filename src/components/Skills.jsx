@@ -17,7 +17,13 @@
 //   },
 //   "ui & styling": {
 //     label: "devDependencies",
-//     skills: ["tailwindcss", "bootstrap", "material-ui", "sass"],
+//     skills: [
+//       "tailwindcss",
+//       "bootstrap",
+//       "material-ui",
+//       "CSS3",
+//       "Responsive Design",
+//     ],
 //   },
 //   performance: {
 //     label: "scripts",
@@ -103,37 +109,78 @@
 import { motion } from "framer-motion";
 import { fadeUp, stagger, revealViewport } from "./motion";
 
-// Skill names only — no version numbers. A version tag next to "React.js"
-// implies a specific claimed version, which isn't something to fabricate.
+// Grouped the way the resume itself groups them. Category labels styled as
+// package.json keys to keep the "developer workspace" motif consistent.
 const skillCategories = {
-  frontend: {
+  backend: {
     label: "dependencies",
     skills: [
-      "react.js",
-      "next.js",
-      "redux",
-      "javascript",
-      "react-hooks",
-      "context-api",
+      "java",
+      "spring-boot",
+      "spring-mvc",
+      "spring-data-jpa",
+      "hibernate",
+      "spring-security",
+      "rest-apis",
+      "microservices",
     ],
   },
-  "ui & styling": {
+  frontend: {
     label: "devDependencies",
     skills: [
-      "tailwindcss",
+      "react.js",
+      "javascript (es6+)",
+      "typescript",
+      "redux",
+      "react-hooks",
+      "react-router",
+      "html5",
+      "css3",
       "bootstrap",
-      "material-ui",
-      "CSS3",
-      "Responsive Design",
+      "axios",
     ],
   },
-  performance: {
-    label: "scripts",
-    skills: ["lazy-loading", "code-splitting", "memoization", "virtual-dom"],
-  },
-  "api & data": {
+  "additional backend": {
     label: "peerDependencies",
-    skills: ["rest-apis", "data-fetching", "chrome-devtools", "lighthouse"],
+    skills: [
+      "node.js",
+      "express.js",
+      "json",
+      "api-integration",
+      "validation",
+      "exception-handling",
+    ],
+  },
+  databases: {
+    label: "scripts",
+    skills: ["mysql", "postgresql", "mongodb", "indexing"],
+  },
+  "testing & devops": {
+    label: "build",
+    skills: [
+      "mockito",
+      "postman",
+      "maven",
+      "git",
+      "github",
+      "gitlab",
+      "docker",
+      "jenkins",
+      "ci/cd",
+      "agile/scrum",
+    ],
+  },
+  "architecture & security": {
+    label: "config",
+    skills: [
+      "oop",
+      "solid",
+      "design-patterns",
+      "rbac",
+      "authentication",
+      "authorization",
+      "service-to-service",
+    ],
   },
 };
 
@@ -167,7 +214,7 @@ export default function Skills() {
           initial="hidden"
           whileInView="show"
           viewport={revealViewport}
-          variants={stagger(0.12)}
+          variants={stagger(0.1)}
           className="grid md:grid-cols-2 gap-6"
         >
           {Object.entries(skillCategories).map(([cat, { label, skills }]) => (
@@ -203,6 +250,20 @@ export default function Skills() {
             </motion.div>
           ))}
         </motion.div>
+
+        <motion.p
+          initial="hidden"
+          whileInView="show"
+          viewport={revealViewport}
+          variants={fadeUp}
+          className="mt-10 text-center font-mono text-xs text-[#66707F] dark:text-[#94A0AF]"
+        >
+          // currently upskilling:{" "}
+          <span className="text-[#10B981]">
+            java 17 · spring boot 3 · redux toolkit · redis · oauth2/oidc ·
+            openapi/swagger · aws · github actions
+          </span>
+        </motion.p>
       </div>
     </section>
   );

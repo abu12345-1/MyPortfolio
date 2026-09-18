@@ -6,9 +6,9 @@ import ThemeToggle from "./ThemeToggle";
 const links = [
   { name: "Home", file: "Hero.jsx", href: "#home" },
   { name: "About", file: "About.jsx", href: "#about" },
-  { name: "Skills", file: "Skills.jsx", href: "#skills" },
-  { name: "Experience", file: "Experience.jsx", href: "#experience" },
-  { name: "Projects", file: "Projects.jsx", href: "#projects" },
+  { name: "Skills", file: "Skills.java", href: "#skills" },
+  { name: "Experience", file: "Experience.java", href: "#experience" },
+  { name: "Projects", file: "Projects.java", href: "#projects" },
   { name: "Contact", file: "Contact.jsx", href: "#contact" },
 ];
 
